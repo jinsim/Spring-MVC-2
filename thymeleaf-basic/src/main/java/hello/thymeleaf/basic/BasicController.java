@@ -1,11 +1,13 @@
 package hello.thymeleaf.basic;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,4 +60,20 @@ public class BasicController {
             this.age = age;
         }
     }
+
+    @GetMapping("/basic-objects")
+    public String basicObjects(HttpSession session) {
+        session.setAttribute("sessionData", "Hello Session"); // 세션 데이터 사용법
+        // HTTP Request, Response 뿐만 아니라, 사용자가 브라우저를 끄지 않는 이상 유지되는 '세션'의 데이터를 가져올 수 있다.
+        return "basic/basic-objects";
+    }
+
+    @Component("helloBean") // 스프링 빈을 만든 것. 컴포넌트 스캔을 해서 HelloBean이 스프링 빈으로 등록된다.
+    // 스프링 빈에 직접 접근하는 것을 보여주기 위함.
+    static class HelloBean {
+        public String hello(String data) {
+            return "Hello" + data;
+        }
+    }
+
 }
