@@ -9,7 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -18,6 +20,15 @@ import java.util.List;
 public class FormItemController {
 
     private final ItemRepository itemRepository;
+
+    @ModelAttribute("regions")
+    public Map<String, String> regions() {
+        Map<String, String> regions = new LinkedHashMap<>();
+        regions.put("SEOUL", "서울");
+        regions.put("BUSAN", "부산");
+        regions.put("JEJU", "제주");
+        return regions;
+    }
 
     @GetMapping
     public String items(Model model) {
@@ -36,6 +47,13 @@ public class FormItemController {
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("item", new Item()); // 빈 아이템 넘겨주기
+//
+//        Map<String, String> regions = new LinkedHashMap<>(); // 그냥 HashMap을 쓰면 순서가 보장이 되지 않기 때문에
+//        regions.put("SEOUL", "서울"); // LinkedHashMap을 쓰면 순서대로 들어간다.
+//        regions.put("BUSAN", "부산"); // 앞에 영어는 왔다갔다하는 값. 뒤에 한글은 사용자에게 단순히 보여주는 값.
+//        regions.put("JEJU", "제주");
+//        model.addAttribute(regions);
+
         return "form/addForm";
     }
 
