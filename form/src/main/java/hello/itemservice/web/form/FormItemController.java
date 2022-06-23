@@ -2,6 +2,7 @@ package hello.itemservice.web.form;
 
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.domain.item.ItemType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,17 @@ public class FormItemController {
 
     @ModelAttribute("regions")
     public Map<String, String> regions() {
-        Map<String, String> regions = new LinkedHashMap<>();
-        regions.put("SEOUL", "서울");
-        regions.put("BUSAN", "부산");
+        Map<String, String> regions = new LinkedHashMap<>(); // 그냥 HashMap을 쓰면 순서가 보장이 되지 않기 때문에
+        regions.put("SEOUL", "서울"); // LinkedHashMap을 쓰면 순서대로 들어간다.
+        regions.put("BUSAN", "부산"); // 앞에 영어는 왔다갔다하는 값. 뒤에 한글은 사용자에게 단순히 보여주는 값.
         regions.put("JEJU", "제주");
         return regions;
+    }
+
+    @ModelAttribute("itemTypes")
+    public ItemType[] itemTypes() {
+        ItemType[] values = ItemType.values(); //values() 메서드로 ENUM에 있는 값들을 배열로 넘겨준다.
+        return values;
     }
 
     @GetMapping
@@ -47,12 +54,6 @@ public class FormItemController {
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("item", new Item()); // 빈 아이템 넘겨주기
-//
-//        Map<String, String> regions = new LinkedHashMap<>(); // 그냥 HashMap을 쓰면 순서가 보장이 되지 않기 때문에
-//        regions.put("SEOUL", "서울"); // LinkedHashMap을 쓰면 순서대로 들어간다.
-//        regions.put("BUSAN", "부산"); // 앞에 영어는 왔다갔다하는 값. 뒤에 한글은 사용자에게 단순히 보여주는 값.
-//        regions.put("JEJU", "제주");
-//        model.addAttribute(regions);
 
         return "form/addForm";
     }
