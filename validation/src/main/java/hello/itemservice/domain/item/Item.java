@@ -3,12 +3,14 @@ package hello.itemservice.domain.item;
 import lombok.Data;
 // hibernate 구현체에만 동작됨.
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.ScriptAssert;
 // BeanValidation이 표준적으로 제공함. 어떤 구현체에서든 동작함.
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
+//@ScriptAssert(lang = "javascript", script = "_this.price * _this.quantity >= 10000", message = "총합이 10000원 넘게 입력해주세요.")
 public class Item {
 
     private Long id;
