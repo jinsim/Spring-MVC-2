@@ -24,7 +24,7 @@ public class Item {
     private Integer price;
 
     @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
-    @Max(9999, groups = {SaveCheck.class})
+    @Max(value = 9999, groups = {SaveCheck.class})
     private Integer quantity;
 
     public Item() {
