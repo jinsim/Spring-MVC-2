@@ -11,7 +11,8 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-public class MessageSourceTest {
+public class
+MessageSourceTest {
 
     @Autowired
     MessageSource ms;
