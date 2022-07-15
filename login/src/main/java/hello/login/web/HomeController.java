@@ -2,6 +2,7 @@ package hello.login.web;
 
 import hello.login.domain.member.Member;
 import hello.login.domain.member.MemberRepository;
+import hello.login.web.session.SessionConst;
 import hello.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @Controller
@@ -45,7 +47,7 @@ public class HomeController {
         return "loginHome"; // 로그인 사용자 전용 홈을 보여준다.
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV2(HttpServletRequest request, Model model) {
 
         // 로그인 판별 = 세션 관리자에 저장된 회원 정보 조회
@@ -57,6 +59,27 @@ public class HomeController {
         }
 
         model.addAttribute("member", member);
+        return "loginHome";
+    }
+
+    @GetMapping("/")
+    public String homeLoginV3(HttpServletRequest request, Model model) {
+
+        HttpSession session = request.getSession(false);// 아직 세션을 생성하지 않을 것이므로, 세션이 없다면 null을 반환하게 한다.
+        // 세션은 메모리를 사용하는 것이므로 꼭 필요할 때만 생성하는 것이 좋다.
+        if (session == null) {
+            return "home";
+        }
+
+        Member loginMember = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        // 세션에 회원 데이터가 없으면 home
+        if (loginMember == null) {
+            return "home";
+        }
+
+        // 세션이 유지되고, 데이터가 있는게 확인되면 loginHome
+        model.addAttribute("member", loginMember);
         return "loginHome";
     }
 
