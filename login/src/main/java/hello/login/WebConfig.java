@@ -2,16 +2,28 @@ package hello.login;
 
 import hello.login.web.filter.LogFilter;
 import hello.login.web.filter.LoginCheckFilter;
+import hello.login.web.interceptor.LogInterceptor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.Filter;
 
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // 사용하는 이유가 있다기 보다는, 스프링이 이렇게 제공해주는 것. 외워야 한다.
+        registry.addInterceptor(new LogInterceptor())
+                .order(1)
+                .addPathPatterns("/**") // 서블릿이랑 패턴이 다르다. / 하위 전부를 나타냄.
+                .excludePathPatterns("/css/**", "/*.ico", "/error"); // 이 경로는 해당 인터셉터를 호출하지 않는다.
+    }
+
+//    @Bean // 로그는 인터셉터 로그를 사용한다.
     public FilterRegistrationBean logFilter() {
         FilterRegistrationBean<Filter> filterRegistrationBean = new FilterRegistrationBean<>();
         filterRegistrationBean.setFilter(new LogFilter()); // 우리가 만든 로그 필터를 넣는다.
