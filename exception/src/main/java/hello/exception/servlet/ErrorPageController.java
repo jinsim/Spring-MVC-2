@@ -11,16 +11,38 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ErrorPageController {
 
+    // RequestDispatcher 상수로 정의되어 있음
+    // Exception이 터져서 WAS까지 가면, WAS가 Reqeust.setAttributes로 추가 정보들을 담아놓는다.
+    public static final String ERROR_EXCEPTION = "javax.servlet.error.exception";
+    public static final String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
+    public static final String ERROR_MESSAGE = "javax.servlet.error.message";
+    public static final String ERROR_REQUEST_URI = "javax.servlet.error.request_uri";
+    public static final String ERROR_SERVLET_NAME = "javax.servlet.error.servlet_name";
+    public static final String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
+
     // Get이든 Post든 한번에 처리하려고 RequestMapping을 사용함.
     @RequestMapping("/error-page/404")
-    public String errorPage404(HttpServletRequest reuqest, HttpServletResponse response) {
+    public String errorPage404(HttpServletRequest request, HttpServletResponse response) {
         log.info("errorPage 404");
+        printErrorInfo(request);
         return "error-page/404";
     }
 
     @RequestMapping("/error-page/500")
     public String errorPage500(HttpServletRequest request, HttpServletResponse response) {
         log.info("errorPage 500");
+        printErrorInfo(request);
         return "error-page/500";
+    }
+
+    private void printErrorInfo(HttpServletRequest request) {
+        log.info("ERROR_EXCEPTION: ex=", request.getAttribute(ERROR_EXCEPTION));
+        log.info("ERROR_EXCEPTION_TYPE: {}", request.getAttribute(ERROR_EXCEPTION_TYPE));
+        log.info("ERROR_MESSAGE: {}", request.getAttribute(ERROR_MESSAGE));
+        // ex의 경우 NestedServletException 스프링이 한번 감싸서 반환
+        log.info("ERROR_REQUEST_URI: {}", request.getAttribute(ERROR_REQUEST_URI));
+        log.info("ERROR_SERVLET_NAME: {}", request.getAttribute(ERROR_SERVLET_NAME));
+        log.info("ERROR_STATUS_CODE: {}", request.getAttribute(ERROR_STATUS_CODE));
+        log.info("dispatchType={}", request.getDispatcherType());
     }
 }
