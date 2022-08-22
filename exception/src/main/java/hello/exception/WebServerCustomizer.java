@@ -6,7 +6,7 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-@Component // 스프링에 등록
+//@Component // 스프링에 등록
 // Runtime Exception이 WAS에 전달되거나, response.sendError()가 호출되면, 등록한 예외 페이지 경로가 호출된다.
 public class WebServerCustomizer implements WebServerFactoryCustomizer<ConfigurableWebServerFactory> {
 
