@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice // @ControllerAdvice에 @ResponseBody가 붙어있는 것이다.
+@RestControllerAdvice(basePackages = "hello.exception.api") // @ControllerAdvice에 @ResponseBody가 붙어있는 것이다.
 public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST) // 정상 흐름으로 돌아오기 때문에, 상태 코드를 400으로 다시 변경한다.
